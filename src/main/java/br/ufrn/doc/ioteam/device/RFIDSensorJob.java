@@ -35,7 +35,6 @@ public class RFIDSensorJob extends SensorJob{
 
 	@Override
 	public void sensing() {
-
 		try {
 			ApiReaderFacade api = new ApiReaderNesslab("192.168.1.231");
 			
@@ -59,17 +58,21 @@ public class RFIDSensorJob extends SensorJob{
 			
 			while(api.hasResponse()) {
 				try {
-					api.getTagStringRepresentation();
-					// só entra aqui quando detecta
-					// RFIDData data = new RFIDData(tagNumber, detectou);
-					// Message msg = new Message(data.serialize());
-					// send(msg);
+					api.captureTagsObject();
+					if(api.hasNewTag()){
+						//System.out.println("Chegou aqui");
+						RFIDData data = new RFIDData(api.getTagUniqueJsonRepresentation(), true);
+						//System.out.println(api.getTagUniqueJsonRepresentation());
+						Message msg = new Message(data.serialize());
+						send(msg);
+						//System.out.println("enviou");
+					}
 					
 				} catch (SessionFullException e) {
 					api.executeAction(new ReaderTagsReset());
 				}
 			}
-			
+			//System.out.println("saiu do while");
 		} catch (UnknownHostException e) {
 			System.err.println("Host not found: " + OperationUtil.getIpReaderNesslab());
 			System.exit(1);
