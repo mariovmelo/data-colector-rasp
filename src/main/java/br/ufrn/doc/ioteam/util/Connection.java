@@ -29,7 +29,7 @@ public class Connection {
 		
 		try{
 			if(mapaClientes.get(deviceId) == null){
-				 DeviceClient client = new DeviceClient(String.format(AZURE_CONECTION,deviceId,accessKey), IotHubClientProtocol.HTTPS);
+				 DeviceClient client = new DeviceClient(String.format(AZURE_CONECTION,deviceId,accessKey), IotHubClientProtocol.AMQPS_WS);
 				
 				//Registrar o callback
 //				MessageCallback callback = new AppMessageCallback();
