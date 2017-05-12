@@ -2,8 +2,10 @@ package br.ufrn.doc.ioteam.device;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
+import java.util.Scanner;
 
 import com.google.gson.Gson;
+import com.microsoft.azure.sdk.iot.device.DeviceClient;
 import com.microsoft.azure.sdk.iot.device.Message;
 
 import api.reader.nesslab.commands.EnableBuzzer;
@@ -19,7 +21,6 @@ import api.reader.nesslab.exceptions.SessionFullException;
 import api.reader.nesslab.facade.ApiReaderNesslab;
 import api.reader.nesslab.interfaces.ApiReaderFacade;
 import api.reader.nesslab.utils.OperationUtil;
-import api.reader.nesslab.exceptions.SessionFullException;
 
 public class RFIDSensorJob extends SensorJob{
 
@@ -34,28 +35,31 @@ public class RFIDSensorJob extends SensorJob{
 	}
 
 	@Override
-	public void sensing() {
+	public void sensing(DeviceClient client) {
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Passou um carro?");
+
 		try {
 			ApiReaderFacade api = new ApiReaderNesslab("192.168.1.231");
-			
+
 			api.executeAction(new EnableBuzzer());		
 			api.executeAction(new SetPowerControl("250"));
 			api.executeAction(new EnableContinueMode());
-			
+
 			api.executeAction(new ResquestStatusBuzzer());
 			System.out.println(api.getTranslatedResponse());
-			
+
 			api.executeAction(new RequestStatusAntenna());
 			System.out.println(api.getTranslatedResponse());
-			
+
 			api.executeAction(new RequestStatusPowerAntenna());
 			System.out.println(api.getTranslatedResponse());
-			
+
 			api.executeAction(new RequestStatusMode());
 			System.out.println(api.getTranslatedResponse());
-			
+
 			api.executeAction(new ReaderTags());
-			
+
 			while(api.hasResponse()) {
 				try {
 					api.captureTagsObject();
@@ -64,13 +68,13 @@ public class RFIDSensorJob extends SensorJob{
 						RFIDData data = new RFIDData(api.getTagUniqueJsonRepresentation(), true);
 						//System.out.println(api.getTagUniqueJsonRepresentation());
 						Message msg = new Message(data.serialize());
-						send(msg);
+						send(client,msg);
 						//System.out.println("enviou");
 					}
-					
 				} catch (SessionFullException e) {
 					api.executeAction(new ReaderTagsReset());
 				}
+				
 			}
 			//System.out.println("saiu do while");
 		} catch (UnknownHostException e) {
@@ -80,9 +84,9 @@ public class RFIDSensorJob extends SensorJob{
 			System.err.println("Don't possible the conection: "+ OperationUtil.getIpReaderNesslab());
 			System.exit(1);
 		}
-		
-	}
 
+	}
+	
 	private class RFIDData{
 		private String tagNumber;
 		private boolean detectou;
