@@ -1,19 +1,10 @@
 package br.ufrn.doc.ioteam.jobs;
 
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
+import com.microsoft.azure.sdk.iot.device.IotHubClientProtocol;
 
-import api.reader.nesslab.commands.EnableBuzzer;
-import api.reader.nesslab.commands.EnableContinueMode;
-import api.reader.nesslab.commands.ReaderTags;
-import api.reader.nesslab.commands.RequestStatusAntenna;
-import api.reader.nesslab.commands.RequestStatusMode;
-import api.reader.nesslab.commands.RequestStatusPowerAntenna;
-import api.reader.nesslab.commands.ResquestStatusBuzzer;
-import api.reader.nesslab.commands.SetPowerControl;
 import api.reader.nesslab.facade.ApiReaderNesslab;
 import api.reader.nesslab.interfaces.ApiReaderFacade;
+import br.ufrn.doc.ioteam.device.LEDVagaSensorJob;
 import br.ufrn.doc.ioteam.device.RFIDSensorJob;
 
 /**
@@ -50,10 +41,17 @@ public class JobsHandler
 //			api.executeAction(new ReaderTags());
 
 			
-
-			RFIDSensorJob rfidSensorJob = new RFIDSensorJob("myFirstJavaDevice", "Ph/nSASaqUOBjbWu5i0rjQ==");
-			rfidSensorJob.initiate();
-
+			AppDevice appDevice = new AppDevice();
+			appDevice.initiate();
+			
+			
+			//rfidSensorJob.initiate();
+			//rfidSensorJob.sensing();
+			
+//			LEDVagaSensorJob ledVagaSensorJob = new LEDVagaSensorJob("ledVaga", "aY1gHjwtYG3UkbMIp0oDGQ==");
+//			ledVagaSensorJob.setProtocol(IotHubClientProtocol.MQTT);
+//			ledVagaSensorJob.initiate();
+			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

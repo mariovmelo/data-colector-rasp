@@ -9,7 +9,7 @@ import com.microsoft.azure.sdk.iot.device.MessageCallback;
 
 public class Connection {
 	//"HostName=EstacionamentoIoT.azure-devices.net;DeviceId=myFirstJavaDevice;SharedAccessKey=Ph/nSASaqUOBjbWu5i0rjQ=="
-	public static final String AZURE_CONECTION = "HostName=EstacionamentoIoT.azure-devices.net;DeviceId=%s;SharedAccessKey=%s";
+	public static final String AZURE_CONECTION = "HostName=ioteamhub.azure-devices.net;DeviceId=%s;SharedAccessKey=%s";
 	
 	private static Connection instance;
 	

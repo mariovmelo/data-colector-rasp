@@ -1,78 +1,83 @@
 package br.ufrn.doc.ioteam.device;
 
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Scanner;
 
 import com.google.gson.Gson;
 import com.microsoft.azure.sdk.iot.device.DeviceClient;
-import com.microsoft.azure.sdk.iot.device.Message;
 
-import api.reader.nesslab.commands.EnableBuzzer;
-import api.reader.nesslab.commands.EnableContinueMode;
-import api.reader.nesslab.commands.ReaderTags;
-import api.reader.nesslab.commands.ReaderTagsReset;
-import api.reader.nesslab.commands.RequestStatusAntenna;
-import api.reader.nesslab.commands.RequestStatusMode;
-import api.reader.nesslab.commands.RequestStatusPowerAntenna;
-import api.reader.nesslab.commands.ResquestStatusBuzzer;
-import api.reader.nesslab.commands.SetPowerControl;
-import api.reader.nesslab.exceptions.SessionFullException;
-import api.reader.nesslab.facade.ApiReaderNesslab;
-import api.reader.nesslab.interfaces.ApiReaderFacade;
 import api.reader.nesslab.utils.OperationUtil;
+import br.ufrn.doc.ioteam.jobs.AppDevice;
 
-public class RFIDSensorJob extends SensorJob{
-
-
-	public RFIDSensorJob(String deviceId,String accessKey) {
-		super(deviceId,accessKey);
+public class RFIDSensorJob implements SensorJob, Runnable{
+	
+	public final static String DEVICE_KEY = "ANTENA_RFID_ENTRADA";
+	
+	private AppDevice appDevice;
+	
+	public RFIDSensorJob(AppDevice appDevice) {
+		this.appDevice = appDevice;
 	}
 
-	@Override
-	public void acting(String msg) {
-
-	}
-
-	@Override
-	public void sensing(DeviceClient client) {
+	public void run() {
 		Scanner sc = new Scanner(System.in);
-		System.out.println("Passou um carro?");
 
 		try {
-			ApiReaderFacade api = new ApiReaderNesslab("192.168.1.231");
+			//ApiReaderFacade api = new ApiReaderNesslab("192.168.1.231");
 
-			api.executeAction(new EnableBuzzer());		
-			api.executeAction(new SetPowerControl("250"));
-			api.executeAction(new EnableContinueMode());
-
-			api.executeAction(new ResquestStatusBuzzer());
-			System.out.println(api.getTranslatedResponse());
-
-			api.executeAction(new RequestStatusAntenna());
-			System.out.println(api.getTranslatedResponse());
-
-			api.executeAction(new RequestStatusPowerAntenna());
-			System.out.println(api.getTranslatedResponse());
-
-			api.executeAction(new RequestStatusMode());
-			System.out.println(api.getTranslatedResponse());
-
-			api.executeAction(new ReaderTags());
-
-			while(api.hasResponse()) {
+		
+//			api.executeAction(new EnableBuzzer());		
+//			api.executeAction(new SetPowerControl("250"));
+//			api.executeAction(new EnableContinueMode());
+//
+//			api.executeAction(new ResquestStatusBuzzer());
+//			System.out.println(api.getTranslatedResponse());
+//
+//			api.executeAction(new RequestStatusAntenna());
+//			System.out.println(api.getTranslatedResponse());
+//
+//			api.executeAction(new RequestStatusPowerAntenna());
+//			System.out.println(api.getTranslatedResponse());
+//
+//			api.executeAction(new RequestStatusMode());
+//			System.out.println(api.getTranslatedResponse());
+//
+//			api.executeAction(new ReaderTags());
+			
+			byte[] b = InetAddress.getByName("localhost").getAddress();
+			System.out.println(b[0] + "." + b[1] + "." + b[2] + "." + b[3]);
+			
+			
+			
+			
+			while(true) {
 				try {
-					api.captureTagsObject();
-					if(api.hasNewTag()){
+//					Socket cliente = new Socket("192.168.0.16",12345);
+//					ObjectOutputStream saida = new ObjectOutputStream(cliente.getOutputStream());
+//					saida.writeObject("Teste");
+//					saida.close();
+					//api.captureTagsObject();
+					//if(api.hasNewTag()){
 						//System.out.println("Chegou aqui");
-						RFIDData data = new RFIDData(api.getTagUniqueJsonRepresentation(), true);
+					System.out.println("Passou um carro?");
+					if(sc.nextInt() == 1){
+						RFIDData data = new RFIDData("Teste", true);
 						//System.out.println(api.getTagUniqueJsonRepresentation());
-						Message msg = new Message(data.serialize());
-						send(client,msg);
-						//System.out.println("enviou");
+						//System.out.println("Enviando: "+data.serialize());
+						appDevice.getSender().addMsg(data.serialize());
+						//Message msg = new Message(data.serialize());
+						//send(client,msg);
 					}
-				} catch (SessionFullException e) {
-					api.executeAction(new ReaderTagsReset());
+						
+						//System.out.println("enviou");
+					//}
+//						cliente.close();
+					Thread.sleep(3000);	
+				} catch (Exception e) {
+					e.printStackTrace();
+					//api.executeAction(new ReaderTagsReset());
 				}
 				
 			}
@@ -90,10 +95,12 @@ public class RFIDSensorJob extends SensorJob{
 	private class RFIDData{
 		private String tagNumber;
 		private boolean detectou;
-
+		private String sensor;
+		
 		public RFIDData(String tagNumber, boolean detectou){
 			this.tagNumber = tagNumber;
 			this.detectou = detectou;
+			this.sensor = DEVICE_KEY;
 		}
 
 		public String serialize(){
@@ -103,4 +110,9 @@ public class RFIDSensorJob extends SensorJob{
 
 	}
 
+	@Override
+	public void sensing() {
+		// TODO Auto-generated method stub
+		
+	}
 }
