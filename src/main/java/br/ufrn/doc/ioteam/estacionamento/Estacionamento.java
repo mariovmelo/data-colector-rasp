@@ -20,22 +20,22 @@ public class Estacionamento {
 		return numeroDeVagas;
 	}
 	
-	public void alocarVaga(String idMotorista) {
-		for (Vaga v : vagasEstacionamento) {
-			if (v.isDisponivel()) {
-				v.setDisponivel(false);
-				v.setDonoDaVaga(idMotorista);
-			}
-		}
-	}
-
-	public void desalocarVaga(int idVaga) {
-		for (Vaga v : vagasEstacionamento) {
-			if (v.getVagaID() == idVaga){
-				v.setDisponivel(true);
-				v.setDonoDaVaga("");
-			}
-		}
-	}
+//	public void alocarVaga(String idMotorista) {
+//		for (Vaga v : vagasEstacionamento) {
+//			if (v.isDisponivel()) {
+//				v.setDisponivel(false);
+//				v.setDonoDaVaga(idMotorista);
+//			}
+//		}
+//	}
+//
+//	public void desalocarVaga(int idVaga) {
+//		for (Vaga v : vagasEstacionamento) {
+//			if (v.getVagaID() == idVaga){
+//				v.setDisponivel(true);
+//				v.setDonoDaVaga("");
+//			}
+//		}
+//	}
 	
 }

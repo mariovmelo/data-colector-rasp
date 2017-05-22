@@ -7,6 +7,8 @@ import com.microsoft.azure.sdk.iot.device.DeviceClient;
 import com.microsoft.azure.sdk.iot.device.IotHubClientProtocol;
 import com.microsoft.azure.sdk.iot.device.MessageCallback;
 
+import br.ufrn.doc.ioteam.estacionamento.Vaga;
+
 public class Connection {
 	//"HostName=EstacionamentoIoT.azure-devices.net;DeviceId=myFirstJavaDevice;SharedAccessKey=Ph/nSASaqUOBjbWu5i0rjQ=="
 	public static final String AZURE_CONECTION = "HostName=ioteamhub.azure-devices.net;DeviceId=%s;SharedAccessKey=%s";
@@ -15,8 +17,11 @@ public class Connection {
 	
 	private Map<String, DeviceClient> mapaClientes;
 	
+	private Map<Integer, Vaga> mapaVagas;
+	
 	private Connection(){
 		mapaClientes = new HashMap<String, DeviceClient>();
+		mapaVagas = new HashMap<Integer,Vaga>();
 	}
 	
 	public static Connection getInstance(){
@@ -26,25 +31,7 @@ public class Connection {
 		return instance;
 	}
 	
-	public void putConnection(String deviceId, String accessKey, MessageCallback callback){
-		
-		try{
-			if(mapaClientes.get(deviceId) == null){
-				 DeviceClient client = new DeviceClient(String.format(AZURE_CONECTION,deviceId,accessKey), IotHubClientProtocol.HTTPS);
-				
-				//Registrar o callback
-//				MessageCallback callback = new AppMessageCallback();
-				client.setMessageCallback(callback, null);
-				client.open();
-				mapaClientes.put(deviceId, client);
-			}
-		}catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-	
-	public DeviceClient getClient(String deviceId, String accessKey,MessageCallback callback){
-		putConnection(deviceId,accessKey,callback);
-		return mapaClientes.get(deviceId);
+	public Map<Integer, Vaga> getMapaVagas(){
+		return mapaVagas;
 	}
 }

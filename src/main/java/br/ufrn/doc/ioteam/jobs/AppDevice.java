@@ -37,7 +37,7 @@ import br.ufrn.doc.ioteam.device.SensorJob;
 public class AppDevice 
 {
 	private static String connString = "HostName=ioteamhub.azure-devices.net;DeviceId=rfidentrada;SharedAccessKey=HcTo5i2TM/osfqSfWurZSw==";
-	private static IotHubClientProtocol protocol = IotHubClientProtocol.MQTT;
+	private static IotHubClientProtocol protocol = IotHubClientProtocol.HTTPS;
 	private static String deviceId = "rfidentrada";
 	private static DeviceClient client;
 	private MessageSender sender;
