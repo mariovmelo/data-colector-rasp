@@ -27,6 +27,7 @@ import com.microsoft.azure.sdk.iot.device.MessageCallback;
 
 import br.ufrn.doc.ioteam.device.ActuatorJob;
 import br.ufrn.doc.ioteam.device.LEDVagaSensorJob;
+import br.ufrn.doc.ioteam.device.PresenceSensorJob;
 import br.ufrn.doc.ioteam.device.RFIDSensorJob;
 import br.ufrn.doc.ioteam.device.SensorJob;
 
@@ -37,7 +38,7 @@ import br.ufrn.doc.ioteam.device.SensorJob;
 public class AppDevice 
 {
 	private static String connString = "HostName=ioteamhub.azure-devices.net;DeviceId=rfidentrada;SharedAccessKey=HcTo5i2TM/osfqSfWurZSw==";
-	private static IotHubClientProtocol protocol = IotHubClientProtocol.HTTPS;
+	private static IotHubClientProtocol protocol = IotHubClientProtocol.AMQPS_WS;
 	private static String deviceId = "rfidentrada";
 	private static DeviceClient client;
 	private MessageSender sender;
@@ -76,12 +77,14 @@ public class AppDevice
 		sender = new MessageSender();
 		
 		RFIDSensorJob rfidSensorJob = new RFIDSensorJob(this);
+		PresenceSensorJob presenceSensor = new PresenceSensorJob(this);
 		
-		ExecutorService executor = Executors.newFixedThreadPool(2);
+		ExecutorService executor = Executors.newFixedThreadPool(3);
 		executor.execute(sender);
-		executor.execute(rfidSensorJob);
+		//executor.execute(rfidSensorJob);
+		executor.execute(presenceSensor);
 		
-		System.out.println("Press ENTER to exit.");
+		//System.out.println("Press ENTER to exit.");
 		while(true);
 		
 		//executor.shutdownNow();

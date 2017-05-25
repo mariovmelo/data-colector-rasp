@@ -66,7 +66,6 @@ public class UltrasomSensorJob implements SensorJob, Runnable{
 
 	}
 
-	@Override
 	public void sensing() {
 		// TODO Auto-generated method stub
 

@@ -7,11 +7,11 @@ import com.pi4j.io.gpio.PinState;
 import com.pi4j.io.gpio.RaspiPin;
 
 public class VagaLed {
-	GpioController gpio = GpioFactory.getInstance();
-	GpioPinDigitalOutput myLed = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_01, "MyLed", PinState.LOW);
-	
-	public void piscar(int frequencia) {
-		myLed.blink(frequencia);
-	}
+//	GpioController gpio = GpioFactory.getInstance();
+//	GpioPinDigitalOutput myLed = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_01, "MyLed", PinState.LOW);
+//	
+//	public void piscar(int frequencia) {
+//		myLed.blink(frequencia);
+//	}
 	
 }

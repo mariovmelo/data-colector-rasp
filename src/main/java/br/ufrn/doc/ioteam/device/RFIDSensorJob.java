@@ -62,8 +62,14 @@ public class RFIDSensorJob implements SensorJob, Runnable{
 					//if(api.hasNewTag()){
 						//System.out.println("Chegou aqui");
 					System.out.println("Passou um carro?");
-					if(sc.nextInt() == 1){
-						RFIDData data = new RFIDData("Teste", true);
+					int entrada = sc.nextInt();
+					if(entrada == 1 || entrada == 2){
+						String valor = "teste";
+						if(entrada == 2){
+							System.out.println("Tag Number?");
+							valor = sc.nextLine();
+						}
+						RFIDData data = new RFIDData(valor, true);
 						//System.out.println(api.getTagUniqueJsonRepresentation());
 						//System.out.println("Enviando: "+data.serialize());
 						appDevice.getSender().addMsg(data.serialize());
@@ -110,7 +116,6 @@ public class RFIDSensorJob implements SensorJob, Runnable{
 
 	}
 
-	@Override
 	public void sensing() {
 		// TODO Auto-generated method stub
 		
