@@ -18,39 +18,76 @@ public class PresenceSensorJob implements SensorJob, Runnable{
 	// create gpio controller
     final GpioController gpio = GpioFactory.getInstance();
 
-    GpioPinDigitalInput presencePin = gpio.provisionDigitalInputPin(RaspiPin.GPIO_00, PinPullResistance.PULL_DOWN);
+    final GpioPinDigitalInput presencePin1; // pin 11
+    final GpioPinDigitalInput presencePin2; // pin 12
+    final GpioPinDigitalInput presencePin3; // pin 13
     
 	public PresenceSensorJob(AppDevice appDevice) {
 		this.appDevice = appDevice;
+		presencePin1 = gpio.provisionDigitalInputPin(RaspiPin.GPIO_00, PinPullResistance.PULL_DOWN);
+		presencePin2 = gpio.provisionDigitalInputPin(RaspiPin.GPIO_01, PinPullResistance.PULL_DOWN);
+		presencePin3 = gpio.provisionDigitalInputPin(RaspiPin.GPIO_02, PinPullResistance.PULL_DOWN);
 	}
 
 	public void run() {
 		
 		int contadorPresenca = 0;
 		
-		boolean lastState = false;
+		// low == presence , high == no presence
+		
+		boolean lastState1 = presencePin1.getState().isHigh(), 
+				lastState2 = presencePin2.getState().isHigh(), 
+				lastState3 = presencePin3.getState().isHigh();
+		
+		boolean currentState1, currentState2, currentState3;
+		
 		while(true){
             
             try {
-            	boolean currentState = presencePin.getState().isHigh();
+            	currentState1 =  presencePin1.getState().isHigh();
+            	currentState2 =  presencePin2.getState().isHigh();
+            	currentState3 =  presencePin3.getState().isHigh();
             	
-            	if(presencePin.getState().isHigh()){
-    				System.out.println("Presenca");
-            		contadorPresenca = 30;
-    				if(lastState != currentState){
-    					PresenceData data = new PresenceData(1, 2);
-        				appDevice.getSender().addMsg(data.serialize());
-    				}
-    				
-    			}else{
-    				contadorPresenca--;
-    				if(contadorPresenca == 0){
-						PresenceData data = new PresenceData(1, 0);
-    					appDevice.getSender().addMsg(data.serialize());
-    					
-    				}
-    			}
-            	lastState = currentState;
+            	
+            	if (currentState1 == false) {
+            		System.out.println("Presenca Vaga 1");
+            		if (lastState1 != currentState1) {
+            			PresenceData data = new PresenceData(1, 1);
+            			appDevice.getSender().addMsg(data.serialize());
+            		}
+            	} else {
+            		if (lastState1 != currentState1) {
+            			PresenceData data = new PresenceData(1, 0);
+            			appDevice.getSender().addMsg(data.serialize());
+            		}
+            	}
+            	
+            	if (currentState2 == false) {
+            		System.out.println("Presenca Vaga 2");
+            		if (lastState2 != currentState2) {
+            			PresenceData data = new PresenceData(2, 1);
+            			appDevice.getSender().addMsg(data.serialize());
+            		}
+            	} else {
+            		if (lastState2 != currentState2) {
+            			PresenceData data = new PresenceData(2, 0);
+            			appDevice.getSender().addMsg(data.serialize());
+            		}
+            	}
+            	
+            	if (currentState3 == false) {
+            		System.out.println("Presenca Vaga 3");
+            		if (lastState3 != currentState3) {
+            			PresenceData data = new PresenceData(3, 1);
+            			appDevice.getSender().addMsg(data.serialize());
+            		}
+            	} else {
+            		if (lastState3 != currentState3) {
+            			PresenceData data = new PresenceData(3, 0);
+            			appDevice.getSender().addMsg(data.serialize());
+            		}
+            	}
+            	
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
