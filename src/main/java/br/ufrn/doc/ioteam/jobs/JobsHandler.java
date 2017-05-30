@@ -5,7 +5,7 @@ import com.microsoft.azure.sdk.iot.device.IotHubClientProtocol;
 import api.reader.nesslab.facade.ApiReaderNesslab;
 import api.reader.nesslab.interfaces.ApiReaderFacade;
 import br.ufrn.doc.ioteam.device.LEDVagaSensorJob;
-import br.ufrn.doc.ioteam.device.RFIDSensorJob;
+import br.ufrn.doc.ioteam.device.RFIDSensorJobSystemIn;
 
 /**
  * Hello world!

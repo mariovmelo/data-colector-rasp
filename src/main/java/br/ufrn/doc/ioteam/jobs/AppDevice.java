@@ -7,13 +7,11 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Queue;
-import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import javax.json.Json;
-import javax.json.JsonBuilderFactory;
 import javax.json.JsonObject;
 
 import com.google.gson.Gson;
@@ -29,7 +27,6 @@ import br.ufrn.doc.ioteam.device.ActuatorJob;
 import br.ufrn.doc.ioteam.device.LEDVagaSensorJob;
 import br.ufrn.doc.ioteam.device.PresenceSensorJob;
 import br.ufrn.doc.ioteam.device.RFIDSensorJob;
-import br.ufrn.doc.ioteam.device.SensorJob;
 
 /**
  * Hello world!
@@ -81,7 +78,7 @@ public class AppDevice
 		
 		ExecutorService executor = Executors.newFixedThreadPool(3);
 		executor.execute(sender);
-		//executor.execute(rfidSensorJob);
+		executor.execute(rfidSensorJob);
 		executor.execute(presenceSensor);
 		
 		//System.out.println("Press ENTER to exit.");

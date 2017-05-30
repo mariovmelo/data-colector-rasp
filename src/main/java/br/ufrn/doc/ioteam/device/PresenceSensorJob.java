@@ -50,7 +50,7 @@ public class PresenceSensorJob implements SensorJob, Runnable{
             	if (currentState1 == false) {
             		System.out.println("Presenca Vaga 1");
             		if (lastState1 != currentState1) {
-            			PresenceData data = new PresenceData(1, 1);
+            			PresenceData data = new PresenceData(1, 2);
             			appDevice.getSender().addMsg(data.serialize());
             		}
             	} else {
@@ -63,7 +63,7 @@ public class PresenceSensorJob implements SensorJob, Runnable{
             	if (currentState2 == false) {
             		System.out.println("Presenca Vaga 2");
             		if (lastState2 != currentState2) {
-            			PresenceData data = new PresenceData(2, 1);
+            			PresenceData data = new PresenceData(2, 2);
             			appDevice.getSender().addMsg(data.serialize());
             		}
             	} else {
@@ -76,7 +76,7 @@ public class PresenceSensorJob implements SensorJob, Runnable{
             	if (currentState3 == false) {
             		System.out.println("Presenca Vaga 3");
             		if (lastState3 != currentState3) {
-            			PresenceData data = new PresenceData(3, 1);
+            			PresenceData data = new PresenceData(3, 2);
             			appDevice.getSender().addMsg(data.serialize());
             		}
             	} else {
