@@ -31,8 +31,6 @@ public class PresenceSensorJob implements SensorJob, Runnable{
 
 	public void run() {
 		
-		int contadorPresenca = 0;
-		
 		// low == presence , high == no presence
 		
 		boolean lastState1 = presencePin1.getState().isHigh(), 
@@ -88,6 +86,9 @@ public class PresenceSensorJob implements SensorJob, Runnable{
             		}
             	}
             	
+            	lastState1 = currentState1;
+            	lastState2 = currentState2;
+            	lastState3 = currentState3;
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
