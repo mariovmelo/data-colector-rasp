@@ -11,13 +11,13 @@ import com.microsoft.azure.sdk.iot.device.DeviceClient;
 import api.reader.nesslab.utils.OperationUtil;
 import br.ufrn.doc.ioteam.jobs.AppDevice;
 
-public class RFIDSensorJobSystemIn implements SensorJob, Runnable{
+public class RFIDSensorJob implements SensorJob, Runnable{
 	
 	public final static String DEVICE_KEY = "ANTENA_RFID_ENTRADA";
 	
 	private AppDevice appDevice;
 	
-	public RFIDSensorJobSystemIn(AppDevice appDevice) {
+	public RFIDSensorJob(AppDevice appDevice) {
 		this.appDevice = appDevice;
 	}
 

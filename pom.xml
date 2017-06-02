@@ -33,7 +33,6 @@
 			<artifactId>reader-rfid</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
-
 		<dependency>
 			<groupId>com.microsoft.azure.sdk.iot</groupId>
 			<artifactId>iot-device-client</artifactId>
