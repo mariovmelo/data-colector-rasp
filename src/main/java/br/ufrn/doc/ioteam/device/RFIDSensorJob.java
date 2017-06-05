@@ -1,9 +1,7 @@
 package br.ufrn.doc.ioteam.device;
 
 import java.io.IOException;
-import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.Scanner;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
